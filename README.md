@@ -18,7 +18,7 @@ The other option is just a simple Ansible playbook, and this is what this articl
 
 The problem that I found is that not many people had tied the gathering and the saving to Git in one single process. It also addresses some complexity associated with the may moving parts of systems like RANCID and that in some cases is not the route some will like to follow.
 
-The playbook in my case is called ios_fact_conf2git.yml. As the name implies it leverages the ios_facts module provided by the Ansible Network Modules to provide the output. More information about ios_facts can be found at: https://docs.ansible.com/ansible/latest/modules/ios_facts_module.html.
+The playbook in my case is called cisco_fact_conf2git.yml. As the name implies it leverages the ios_facts module provided by the Ansible Network Modules to provide the output. More information about ios_facts can be found at: https://docs.ansible.com/ansible/latest/modules/ios_facts_module.html.
 
 The other component is a jinja template that formats the file into a particular format and saves it as .txt, .yml, .cfg, or any format you provide. The template is contained in "role" format, but that is not completely necessary. The name of the template is dicovery.j2
 
@@ -36,3 +36,61 @@ roles/
     templates/
       discovery.j2
 ```
+
+- An example of an output will look like this (Edited for brevity):
+
+```yml
+Hostname: rem1-rt-1
+
+
+Model: CISCO2921/K9
+
+
+Serial Number: FTXXXXXXXX
+
+
+OS Version: 15.2(4)M6a
+
+
+OS Image: flash0:c2900-universalk9-mz.SPA.152-4.M6a.bin
+
+
+CDP Neighbors:
+{'GigabitEthernet0/0.1': [{'host': 'rem1-sw-1', 'port': 'GigabitEthernet1/0/1'}]}
+
+
+Running Configuration:
+!
+! No configuration change since last restart
+version 15.2
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+!
+hostname wan-rt1
+!
+```
+
+The same can be done for other OS's like for example JUNOS:
+
+[juniper:children]
+junos
+
+[junos:children]
+junos_dev_grp
+
+[junos:vars]
+ansible_network_os=junos
+
+The playbook basics:
+
+- hosts: juniper
+
+ tasks:
+
+ - name: Gather Facts for JUNOS based devices
+    junos_facts:
+      gather_subset:
+        - "!hardware"
+    register: config_response
+    when: ansible_network_os == "junos"
