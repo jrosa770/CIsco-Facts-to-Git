@@ -67,7 +67,7 @@ service timestamps debug datetime msec localtime show-timezone
 service timestamps log datetime msec localtime show-timezone
 service password-encryption
 !
-hostname wan-rt1
+hostname rem1-rt-1
 !
 ```
 
