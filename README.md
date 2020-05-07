@@ -73,6 +73,7 @@ hostname wan-rt1
 
 The same can be done for other OS's like for example JUNOS:
 
+```ini
 [juniper:children]
 junos
 
@@ -81,9 +82,11 @@ junos_dev_grp
 
 [junos:vars]
 ansible_network_os=junos
+```
 
 The playbook basics:
 
+```yml
 - hosts: juniper
 
  tasks:
@@ -94,3 +97,4 @@ The playbook basics:
         - "!hardware"
     register: config_response
     when: ansible_network_os == "junos"
+```
