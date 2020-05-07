@@ -1,4 +1,4 @@
-# CIsco-Facts-to-Git
+# Cisco-Facts-to-Git
 Gathers Facts and Configurations from Cisco Devices and commits/ pushes them to a Git Repository
 
 ## Backing up Cisco Configurations Directly into A Git Repo Using Ansible
