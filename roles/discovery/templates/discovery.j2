@@ -1,0 +1,15 @@
+Hostname: {{ ansible_net_hostname }}
+
+Model: {{ansible_net_model}}
+
+Serial Number: {{ansible_net_serialnum}}
+
+IOS Version: {{ansible_net_version}}
+
+IOS Image: {{ansible_net_image}}
+
+CDP Neighbors:
+{{ansible_net_neighbors}}
+
+Running Configuration:
+{{ansible_net_config}}

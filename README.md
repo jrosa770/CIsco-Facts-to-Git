@@ -9,12 +9,12 @@ There's also applications like RANCID that will keep configurations for you in C
 
 The other option is just a simple Ansible playbook, and this is what this article will cover. Most engineers and admins using Ansible will leverage in some way a Git repository, in either public form, like GitHub, private, via Bitbucket or you own internal Git Server. Regardless of repository destination the process is the same:
 
-    Create a Repo
-    Clone a local copy
-    Save your new files in the local copy folder
-    Stage your newly save files via "git add"
-    Commit your files via "git commit -m"
-    Push your new commit via "git push"
+    1. Create a Repo
+    2. Clone a local copy
+    3. Save your new files in the local copy folder
+    4. Stage your newly save files via "git add"
+    5. Commit your files via "git commit -m"
+    6. Push your new commit via "git push"
 
 The problem that I found is that not many people had tied the gathering and the saving to Git in one single process. It also addresses some complexity associated with the may moving parts of systems like RANCID and that in some cases is not the route some will like to follow.
 
