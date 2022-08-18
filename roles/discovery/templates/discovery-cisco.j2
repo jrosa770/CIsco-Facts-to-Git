@@ -1,0 +1,66 @@
+{% if ansible_network_os == "cisco.asa.asa" %}
+> Data Collected: {{ time_stamp }}
+
+# Hostname: {{ ansible_net_hostname }}
+
+Serial Number: {{ansible_net_serialnum}}
+
+OS Version: {{ansible_net_version}}
+
+OS Image: {{ansible_net_image}}
+
+## Running Configuration:
+
+```yaml
+{{ ansible_net_config }}
+
+````
+{% elif ansible_network_os == "cisco.ios.ios" %}
+> Data Collected: {{ time_stamp }}
+
+# Hostname: {{ ansible_net_hostname }}
+
+Model: {{ansible_net_model}}
+
+Serial Number: {{ansible_net_serialnum}}
+
+IOS Type: {{ ansible_net_iostype }}
+
+OS Version: {{ansible_net_version}}
+
+OS Image: {{ansible_net_image}}
+
+CDP Neighbors:
+```yaml
+{{ ansible_net_neighbors | to_nice_yaml }}
+```
+
+## Running Configuration:
+
+```yaml
+{{ ansible_net_config }}
+```
+{% elif ansible_network_os == "cisco.nxos.nxos" %}
+> Data Collected: {{ time_stamp }}
+
+# Hostname: {{ ansible_net_hostname }}
+
+Model: {{ansible_net_model}}
+
+Serial Number: {{ansible_net_serialnum}}
+
+OS Version: {{ansible_net_version}}
+
+OS Image: {{ansible_net_image}}
+
+CDP Neighbors:
+```yaml
+{{ ansible_net_neighbors | to_nice_yaml }}
+```
+
+## Running Configuration:
+
+```yaml
+{{ ansible_net_config }}
+```
+{% endif %}
