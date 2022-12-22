@@ -98,3 +98,8 @@ The playbook basics:
     register: config_response
     when: ansible_network_os == "junos"
 ```
+
+## Update 12/2022
+
+> Update for Output in Markdown
+> Inventory in YAML

@@ -41,13 +41,13 @@ corp-dc-spine-01
 corp-dc-spine-03 
 corp-dc-spine-03
 corp-dc-leaf-compute-01
-corp-dc-leaf-compute-03 
+corp-dc-leaf-compute-02 
 corp-dc-leaf-compute-03
 corp-dc-leaf-storage-01
-corp-dc-leaf-storage-03 
+corp-dc-leaf-storage-02
 corp-dc-leaf-storage-03
 corp-dc-leaf-edge-01
-corp-dc-leaf-edge-03 
+corp-dc-leaf-edge-02
 corp-dc-leaf-edge-03
 corp-dc-swc-01 
 corp-dc-swc-02 
@@ -65,13 +65,13 @@ corp-dc-spine-01
 corp-dc-spine-03 
 corp-dc-spine-03
 corp-dc-leaf-compute-01
-corp-dc-leaf-compute-03 
+corp-dc-leaf-compute-02
 corp-dc-leaf-compute-03
 corp-dc-leaf-storage-01
-corp-dc-leaf-storage-03 
+corp-dc-leaf-storage-02
 corp-dc-leaf-storage-03
 corp-dc-leaf-edge-01
-corp-dc-leaf-edge-03 
+corp-dc-leaf-edge-03
 corp-dc-leaf-edge-03
 
 [remote:children]

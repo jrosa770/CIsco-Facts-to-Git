@@ -9,34 +9,39 @@
   vars:
     #authentication_provider: normal (tacacs) | local | alternate
     authentication_provider: normal
-    git_repo: /usr/share/git/explorianetconfvault
+    git_repo: /git/netconfvault
     git_load: enabled
     git_sync: enabled
 
   tasks:
   - name: obtain login credentials
     include_vars: "auth/secrets.yml"
+    delegate_to: localhost
 
   - name: Set Username and Password
     set_fact:
       remote_user: "{{ creds['username'] }}"
       ansible_ssh_pass: "{{ creds['password'] }}"
     when: authentication_provider == "normal"
+    delegate_to: localhost
 
   - name: define authentication provider User Local {{ local_creds['username'] }}
     set_fact:
       remote_user: "{{ local_creds['username'] }}"
       ansible_ssh_pass: "{{ local_creds['password'] }}"
     when: authentication_provider == "local"
+    delegate_to: localhost
 
   - name: define authentication provider Alternate {{ alt_creds['username'] }}
     set_fact:
       remote_user: "{{ alt_creds['username'] }}"
       ansible_ssh_pass: "{{ alt_creds['password'] }}"
     when: authentication_provider == "alternate"
+    delegate_to: localhost
 
   - name: new variable with current date time
     set_fact: time_stamp="{{lookup('pipe','date \"+%m-%d-%Y_%H:%M\"')}}"
+    delegate_to: localhost
 
   - name: Gather Facts for IOS based devices
     ios_facts:
@@ -59,18 +64,6 @@
     register: config_response
     when: ansible_network_os == "iosxr"
 
-  - name: Hostname for "{{ inventory_hostname }}"
-    debug: var=ansible_net_hostname
-
-  - name: Active Configuration for "{{ inventory_hostname }}"
-    debug: var=ansible_net_config
-
-  - name: Version for "{{ inventory_hostname }}"
-    debug: var=ansible_net_version
-
-  - name: CDP for "{{ inventory_hostname }}"
-    debug: var=ansible_net_neighbors
-
   - name: Create Location for CORP Devices
     file:
       path: "{{ item.dest }}"
@@ -79,6 +72,7 @@
     with_items:
       - { dest: '{{ git_repo }}/CORP', mode: '0655'}
     when: (inventory_hostname in groups ['corp']) and (git_load == "enabled")
+    delegate_to: localhost
 
   - name: Create Device Folder for CORP Devices
     file:
@@ -88,6 +82,7 @@
     with_items:
       - { dest: '{{ git_repo }}/CORP/{{ inventory_hostname }}', mode: '0655'}
     when: (inventory_hostname in groups ['corp']) and (git_load == "enabled")
+    delegate_to: localhost
 
   - name: Create Location for CORP_DC Devices
     file:
@@ -97,6 +92,7 @@
     with_items:
       - { dest: '{{ git_repo }}/CORP_DC', mode: '0655'}
     when: (inventory_hostname in groups ['corp_dc']) and (git_load == "enabled")
+    delegate_to: localhost
 
   - name: Create Device Folder for CORP_DC Devices
     file:
@@ -106,6 +102,7 @@
     with_items:
       - { dest: '{{ git_repo }}/CORP_DC/{{ inventory_hostname }}', mode: '0655'}
     when: (inventory_hostname in groups ['corp_dc']) and (git_load == "enabled")
+    delegate_to: localhost
 
   - name: Create Location for REMOTE Devices
     file:
@@ -115,6 +112,7 @@
     with_items:
       - { dest: '{{ git_repo }}/REMOTE', mode: '0655'}
     when: (inventory_hostname in groups ['remote']) and (git_load == "enabled")
+    delegate_to: localhost
 
   - name: Create Device Folder for REMOTE Devices
     file:
@@ -124,24 +122,53 @@
     with_items:
       - { dest: '{{ git_repo }}/REMOTE/{{ inventory_hostname }}', mode: '0655'}
     when: (inventory_hostname in groups ['remote']) and (git_load == "enabled")
+    delegate_to: localhost
+
+#YAML Output
 
   - name: Generate configuration files for CORP Devices
     template:
-      src=roles/discovery/templates/discovery.j2
-      dest={{ git_repo }}/CORP/{{ inventory_hostname }}/{{ inventory_hostname }}.yml
+      src: roles/discovery/templates/discovery.j2
+      dest: '{{ git_repo }}/CORP/{{ inventory_hostname }}/{{ inventory_hostname }}.yml'
     when: (inventory_hostname in groups ['corp']) and (git_load == "enabled")
+    delegate_to: localhost
 
   - name: Generate configuration files for CORP_DC Devices
     template:
-      src=roles/discovery/templates/discovery.j2
-      dest={{ git_repo }}/CORP_DC/{{ inventory_hostname }}/{{ inventory_hostname }}.yml
+      src: roles/discovery/templates/discovery.j2
+      dest: '{{ git_repo }}/CORP_DC/{{ inventory_hostname }}/{{ inventory_hostname }}.yml'
     when: (inventory_hostname in groups ['corp_dc']) and (git_load == "enabled")
+    delegate_to: localhost
 
   - name: Generate configuration files for REMOTE Devices
     template:
-      src=roles/discovery/templates/discovery.j2
-      dest={{ git_repo }}/REMOTE/{{ inventory_hostname }}/{{ inventory_hostname }}.yml
+      src: roles/discovery/templates/discovery.j2
+      dest: '{{ git_repo }}/REMOTE/{{ inventory_hostname }}/{{ inventory_hostname }}.yml'
     when: (inventory_hostname in groups ['remote']) and (git_load == "enabled")
+    delegate_to: localhost
+
+# Markdown Output
+
+  - name: Generate configuration files for CORP Devices
+    template:
+      src: roles/discovery/templates/cisco2md.j2
+      dest: '{{ git_repo }}/CORP/{{ inventory_hostname }}/{{ inventory_hostname }}.md'
+    when: (inventory_hostname in groups ['corp']) and (git_load == "enabled")
+    delegate_to: localhost
+
+  - name: Generate configuration files for CORP_DC Devices
+    template:
+      src: roles/discovery/templates/cisco2md.j2
+      dest: '{{ git_repo }}/CORP_DC/{{ inventory_hostname }}/{{ inventory_hostname }}.md'
+    when: (inventory_hostname in groups ['corp_dc']) and (git_load == "enabled")
+    delegate_to: localhost
+
+  - name: Generate configuration files for REMOTE Devices
+    template:
+      src: roles/discovery/templates/cisco2md.j2
+      dest: '{{ git_repo }}/REMOTE/{{ inventory_hostname }}/{{ inventory_hostname }}.md'
+    when: (inventory_hostname in groups ['remote']) and (git_load == "enabled")
+    delegate_to: localhost
 
   - name: Sync Changes into "{{ git_repo }}"
     command: "{{ item }}"
@@ -154,3 +181,5 @@
     args:
       chdir: "{{ git_repo }}"
     when: git_sync == "enabled"
+    delegate_to: localhost
+...

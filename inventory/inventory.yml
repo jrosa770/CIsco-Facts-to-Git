@@ -1,0 +1,115 @@
+all:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    ansible_connection :  local
+
+cisco:
+  children:
+  ios:
+  nxos:
+  iosxr:
+
+ios:
+  children:
+    corp_ios:
+    remote_ios:
+  vars:
+    ansible_network_os: ios
+    ansible_connection: network_cli
+
+nxos:
+  children:
+    corp_nxos:
+    remote_nxos:
+  vars:
+    ansible_network_os: nxos
+    ansible_connection: network_cli
+
+iosxr:
+  children:
+  vars:
+    ansible_network_os: iosxr
+    ansible_connection: network_cli
+
+corp:
+  children:
+    corp_ios:
+    corp_nxos:
+
+corp_ios:
+  hosts:
+    corp-sws-01:
+    corp-sws-02:
+    corp-sws-03:
+    corp-sws-04:
+
+corp_nxos:
+  hosts:
+    corp-dc-spine-01:
+    corp-dc-spine-02:
+    corp-dc-spine-03:
+    corp-dc-leaf-compute-01:
+    corp-dc-leaf-compute-02:
+    corp-dc-leaf-compute-03:
+    corp-dc-leaf-storage-01:
+    corp-dc-leaf-storage-02:
+    corp-dc-leaf-storage-03:
+    corp-dc-leaf-edge-01:
+    corp-dc-leaf-edge-02:
+    corp-dc-leaf-edge-03:
+    corp-dc-swc-01:
+    corp-dc-swc-02:
+    corp-dc-swa-03:
+    corp-dc-swa-04:
+    corp-dc-odmz-01:
+    corp-dc-odmz-02:
+    corp-dc-idmz-01:
+    corp-dc-idmz-02:
+    corp-dc-swa-01:
+    corp-dc-swa-02:
+
+corp_dc:
+  hosts:
+    corp-dc-spine-01:
+    corp-dc-spine-02:
+    corp-dc-spine-03:
+    corp-dc-leaf-compute-01:
+    corp-dc-leaf-compute-02:
+    corp-dc-leaf-compute-03:
+    corp-dc-leaf-storage-01:
+    corp-dc-leaf-storage-02:
+    corp-dc-leaf-storage-03:
+    corp-dc-leaf-edge-01:
+    corp-dc-leaf-edge-02:
+    corp-dc-leaf-edge-03:
+
+remote:
+  children:
+    remote_ios:
+    remote_nxos:
+
+remote_ios:
+  hosts:
+    em1-rt-1:
+    em1-rt-2:
+    em2-rt-1:
+    em2-rt-2:
+    em3-rt-1:
+    em3-rt-2:
+    em4-rt-1:
+    em4-rt-2:
+    em1-sw-1:
+    em1-sw-2:
+    em2-sw-1:
+    em2-sw-2:
+    em3-sw-1:
+    em3-sw-2:
+    em4-sw-1:
+    em4-sw-2:
+
+remote_nxos:
+  hosts:
+    rem1-swc-1:
+    rem1-swc-2:
+    rem2-swc-1:
+    rem2-swc-2:
